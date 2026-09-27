@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lin Ding Shan — Edge computer vision for agriculture</title>
+<meta name="description" content="Portfolio of Lin Ding Shan: a handheld, fully offline durian disease and pest scouting device on Raspberry Pi 5, and the measurements behind it.">
+<style>
+  :root {
+    --bg: #fafaf8;
+    --fg: #1a1a1a;
+    --muted: #5c5c5c;
+    --line: #e2e2dd;
+    --card: #ffffff;
+    --accent: #2f6b3a;
+    --accent-soft: #e8f1ea;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121412; --fg: #ececea; --muted: #a8a8a4; --line: #2a2d2a;
+      --card: #191c19; --accent: #7fc48e; --accent-soft: #1e2b21;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121412; --fg: #ececea; --muted: #a8a8a4; --line: #2a2d2a;
+    --card: #191c19; --accent: #7fc48e; --accent-soft: #1e2b21;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--sans); font-size: 17px; line-height: 1.55;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px; }
+  header.hero { padding: 64px 0 40px; border-bottom: 1px solid var(--line); }
+  .hero h1 { font-size: 2.2rem; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .hero .tag { font-size: 1.1rem; color: var(--accent); font-weight: 600; margin: 0 0 14px; }
+  .hero p.lead { font-size: 1.05rem; color: var(--muted); max-width: 640px; margin: 0 0 20px; }
+  .links { display: flex; flex-wrap: wrap; gap: 10px 18px; font-size: 0.95rem; }
+  .links a { border-bottom: 1px solid transparent; }
+  nav.top { display: flex; flex-wrap: wrap; gap: 6px 20px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 0.92rem; }
+  nav.top a { color: var(--muted); }
+  nav.top a:hover { color: var(--accent); text-decoration: none; }
+  section { padding: 44px 0; border-bottom: 1px solid var(--line); }
+  section h2 { font-size: 1.45rem; margin: 0 0 6px; }
+  section p.sub { color: var(--muted); margin: 0 0 24px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 22px 0; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+  .stat b { display: block; font-size: 1.5rem; line-height: 1.1; color: var(--accent); font-family: var(--mono); }
+  .stat span { display: block; font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
+  .device { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; }
+  @media (max-width: 720px) { .device { grid-template-columns: 1fr; } }
+  .media {
+    background: var(--accent-soft); border: 1px dashed var(--accent); border-radius: 12px;
+    min-height: 240px; display: flex; align-items: center; justify-content: center;
+    text-align: center; color: var(--muted); font-size: 0.9rem; padding: 16px;
+  }
+  .media img, .media video { width: 100%; height: auto; border-radius: 10px; display: block; }
+  .cards { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; }
+  .card h3 { margin: 0 0 4px; font-size: 1.12rem; }
+  .card .meta { font-size: 0.85rem; color: var(--muted); margin: 0 0 12px; font-family: var(--mono); }
+  .card p { margin: 0 0 10px; }
+  .card ul { margin: 0 0 12px 18px; padding: 0; }
+  .card li { margin: 4px 0; }
+  .card .foot { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.9rem; }
+  .pill { display: inline-block; font-size: 0.78rem; padding: 2px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; margin-left: 6px; vertical-align: middle; }
+  .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .skills div { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; font-size: 0.95rem; }
+  .skills b { display: block; margin-bottom: 4px; }
+  ol.pubs { margin: 0; padding-left: 20px; }
+  ol.pubs li { margin: 10px 0; }
+  ol.pubs .status { font-size: 0.82rem; color: var(--muted); font-family: var(--mono); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  td, th { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 0.85rem; }
+  footer { padding: 36px 0 60px; color: var(--muted); font-size: 0.9rem; }
+  .note { font-size: 0.88rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="hero">
+  <h1>Lin Ding Shan</h1>
+  <p class="tag">AgriTech Computer Vision &nbsp;|&nbsp; Edge AI Deployment</p>
+  <p class="lead">I build vision systems for agriculture and run them on edge hardware — then measure what actually happens on the device: latency, power, heat, and the classes a benchmark score quietly loses.</p>
+  <div class="links">
+    <a href="mailto:l1055505011@gmail.com">l1055505011@gmail.com</a>
+    <a href="https://github.com/xiaolin200206" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://www.linkedin.com/in/lin-ding-shan/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="Lin_Ding_Shan_Resume.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
+    <span class="note">Kuala Lumpur · graduating May 2027 · open to relocation to Australia / New Zealand</span>
+  </div>
+</header>
+
+<nav class="top">
+  <a href="#device">The device</a>
+  <a href="#work">Case studies</a>
+  <a href="#data">Datasets &amp; code</a>
+  <a href="#papers">Papers</a>
+  <a href="#skills">Skills</a>
+</nav>
+
+<!-- ============================================================ -->
+<section id="device">
+  <h2>A handheld disease-and-pest scouting device for durian orchards</h2>
+  <p class="sub">Founder &amp; lead engineer, 2025 – present · pre-incorporation venture, Malaysia</p>
+
+  <div class="device">
+    <div>
+      <p>A grower walks the orchard, photographs a suspect leaf or trunk, and within a few hundred milliseconds the device suggests which of 12 disease and pest categories it might be. It runs entirely on a battery-powered Raspberry Pi 5 — no network, nothing uploaded — and is a decision aid, not a diagnosis: the final call stays with the grower.</p>
+      <p>I built the whole thing: field data collection across 11 orchard sites in Peninsular Malaysia and Sabah, the lesion-level annotation standard (set with a crop-protection practitioner), detector training, ONNX / LiteRT export, quantisation, and on-device profiling with hardware counters. It is a field-tested prototype; trials with growers are the next step.</p>
+    </div>
+    <div class="media">
+      <!-- Replace this block with a real photo or a 20–30 s video of the device in the orchard, e.g.:
+           <img src="img/device.jpg" alt="Handheld scouting device in a durian orchard">
+           or
+           <video src="media/demo.mp4" controls muted playsinline></video> -->
+      Device photo / 30-second field demo goes here
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>12</b><span>disease &amp; pest categories, fully offline</span></div>
+    <div class="stat"><b>~1,300</b><span>field images across 11 orchard sites</span></div>
+    <div class="stat"><b>351 ms</b><span>operator wait per image (down from 718 ms)</span></div>
+    <div class="stat"><b>16</b><span>detectors trained under one frozen recipe</span></div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="work">
+  <h2>Case studies</h2>
+  <p class="sub">Each one is a question the device forced me to answer, with the measurement that answered it. Every number links to public data and code.</p>
+
+  <div class="cards">
+
+    <div class="card">
+      <h3>One model or two? Deciding by what the operator actually waits for</h3>
+      <p class="meta">Raspberry Pi 5 · ONNX Runtime · YOLO11s / YOLO11n · Arm PMU counters · battery-rail power</p>
+      <p>The fielded system ran two specialist detectors (diseases, pests) fused at run time. I trained a unified 12-class detector and compared them as <em>deployable pipelines</em>, not as models: same 247-image evaluation set, same decoding, fusion policy swept, three seeds, paired bootstrap.</p>
+      <ul>
+        <li>Accuracy did not separate them: 0.007 macro AP@0.5, a third of the seed-to-seed spread; the fusion rule alone moved the specialist score across 0.351–0.456.</li>
+        <li>The pair cost 2.05× the unified model's latency and introduced a cross-model arbitration error that no aggregate metric shows.</li>
+        <li>A <em>small</em> second detector overshot its arithmetic-proportional cost by 41%, because per-pass memory traffic on a 2 MB-cache SoC doesn't scale with FLOPs.</li>
+        <li>Under the real on-demand duty cycle, per-patrol energy differed by 2%; operator wait differed by 2×. The device moved to one model: <b>718 → 351 ms</b>.</li>
+      </ul>
+      <div class="foot"><a href="https://github.com/xiaolin200206/One-vs-two-model" target="_blank" rel="noopener">Code &amp; telemetry</a><span class="note">Manuscript under review</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Which categories survive INT8? A per-class deployability screen</h3>
+      <p class="meta">LiteRT + XNNPACK · FP32 / w8a32 / w8a16 / INT8 · 4 backbones · 72 Wh battery rail · PMU counters</p>
+      <p>INT8 is the default before deployment: 2.9–4.2× faster and 71–79% less energy per image on this device. Aggregate mAP fell 31–53%, which a team might accept — but scored per class, INT8 dropped the two smallest pest categories below a usable bound on <em>every</em> backbone. Those were the two categories the device exists to catch.</p>
+      <ul>
+        <li>Weight precision wasn't the problem: weight-only (dynamic) quantisation kept 96–99% of FP32 accuracy at FP32 latency and 24–40% lower energy, and removed no category on 3 of 4 backbones.</li>
+        <li>Median target area, measured from the labels alone, predicts which classes fall (Spearman −0.85; −0.94 on VisDrone) — so the at-risk classes are known before training.</li>
+        <li>Two export paths from identical weights differed 750× in output scale; one zeroed every class score while the boxes stayed correct. The same INT8 file scored 0.339 vs 0.064 under two runtime versions.</li>
+      </ul>
+      <div class="foot"><a href="https://github.com/xiaolin200206/Durian_quant" target="_blank" rel="noopener">Code &amp; measurements</a><span class="note">Manuscript under review</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Thermal cut-off, not throttling, is what stops the device <span class="pill">paper accepted</span></h3>
+      <p class="meta">Raspberry Pi 5 + Active Cooler · YOLOv8s · 5 duty-cycle configurations · 3 h runs, replicated 4 weeks apart · SoC power rails</p>
+      <p>Everyone worries about frequency throttling. On this platform it cost 2.6% of median latency. What interrupted monitoring was the 82 °C software cut-off: <b>99 events in 3 hours</b> of continuous inference, each a 5 s gap during which trees were walked past unexamined. A 30 s sleep interval removed them under test conditions; 45 s kept a margin.</p>
+      <ul>
+        <li>Duty cycling lowered mean SoC power by 28% but <em>raised</em> energy per inference by 39%, because the idle floor is paid through every sleep — a trade a battery budget has to know about.</li>
+        <li>A dataset-integrity audit (MD5 + perceptual hashing) found an augment-before-split leak that had inflated one class's AP by 35% and mAP by 9.5%; the split was rebuilt at source-photo level.</li>
+        <li>Eleven runs across three detector families left the same two classes at zero — capacity wasn't the cause; one was never labelled, one was a property of the validation sample.</li>
+      </ul>
+      <div class="foot"><a href="https://github.com/xiaolin200206/Edge-Disease-Inference-Engine" target="_blank" rel="noopener">Engine, telemetry &amp; scripts</a><a href="https://doi.org/10.5281/zenodo.22138420" target="_blank" rel="noopener">Dataset &amp; weights (Zenodo)</a><span class="note">Accepted, Smart Agricultural Technology (Elsevier)</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Scheduling as a thermal actuator: 12.7 °C from a software change</h3>
+      <p class="meta">Two co-located detectors (YOLO11s leaf, YOLO11n pest) · parallel / staggered / sequential · 3 h per policy · 63,952 telemetry samples</p>
+      <p>Running two detectors at the same time on a passively cooled node pushed the die to 81.0 °C, one degree from the cut-off. Running them one after the other peaked at 68.3 °C — same models, same frame rate, no hardware change — and cut pest-model latency by 33%.</p>
+      <ul>
+        <li>Concurrency didn't add a fixed penalty; it contaminated the body of the latency distribution: median unchanged, interquartile range 184 → 52 ms after serialising.</li>
+        <li>The slow inferences recurred on the beat period of the two invocation schedules (~13 s), which a fixed start-offset delays but cannot prevent.</li>
+        <li>An INT8 accelerator (Hailo-8L) ran 15× faster and returned ~188 boxes per empty frame; the GPU-dependent conversion path was judged unfit for an evolving label space and the device was returned.</li>
+      </ul>
+      <div class="foot"><a href="https://github.com/xiaolin200206/durian-edge-ai-scheduling" target="_blank" rel="noopener">Scheduler, logs &amp; analysis</a><span class="note">Manuscript under review</span></div>
+    </div>
+
+    <div class="card">
+      <h3>A containerised greenhouse monitoring node — and why container-overhead numbers don't travel</h3>
+      <p class="meta">Urban Farm Tech internship, Jan–May 2026 · MobileNetV2 → ONNX · Docker vs native · 4 interleaved 3 h runs · UPS-rail power</p>
+      <p>Built and deployed an offline basil disease-monitoring node in a commercial greenhouse: ~1,700 on-site images, Raspberry Pi 5, Telegram alerts confirmed over 3-of-5 frames, under 2.5 s end to end. Then measured what Docker actually cost.</p>
+      <ul>
+        <li>The container drew 0.47 W less and ran 3.7 °C cooler — but completed 6.6% fewer inferences, so energy per inference was not detectably better. Report energy per unit of work, not watts.</li>
+        <li>Its 46% higher latency traced to an ONNX Runtime version mismatch baked into the image (1.19 vs 1.29 on the host), not to containerisation itself. Wrote a per-run environment-manifest tool so such comparisons stay attributable.</li>
+        <li>Over 311,683 consecutive frames of a quiet scene the node produced zero spurious alerts; the four novel objects that did appear were all routed to one class — the case for an explicit reject option.</li>
+      </ul>
+      <div class="foot"><a href="https://github.com/xiaolin200206/edge-container-deployment-measurement" target="_blank" rel="noopener">Code &amp; telemetry</a><a href="https://doi.org/10.5281/zenodo.22857312" target="_blank" rel="noopener">Dataset (Zenodo)</a><span class="note">Manuscript under review</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Capture sessions, not images: what a field accuracy figure actually measures</h3>
+      <p class="meta">560 field images → 73 capture sessions · 9 architectures × 4 seeds · leave-one-farm-out on 8 orchards · PlantVillage leaf IDs</p>
+      <p>A camera carried into an orchard produces many near-independent-looking photos of one tree. Split at image level, 96.7% of test images shared a session with training; macro-F1 was inflated by 12.2 points on average and the ranking of nine architectures changed. PlantVillage has the same structure: 40,490 images are 7,524 leaves, and an image-level split leaks 99.6% of its test set.</p>
+      <ul>
+        <li>Hash- and DINOv2-based audits recovered almost none of the session structure, so the grouping has to be recorded at capture — it can't be rebuilt after release.</li>
+        <li>Held out by farm, which farm is scored explains 70–88% of the variance in the reported figure; the architecture explains 0–3%. Using the withheld farm to pick the checkpoint moved figures by up to 14.7 points.</li>
+        <li>Practical consequence for the device: collect from more orchards before touching the model, and validate on orchards it has never seen.</li>
+      </ul>
+      <div class="foot"><a href="https://github.com/xiaolin200206/durian-session-benchmark" target="_blank" rel="noopener">Session benchmark</a><a href="https://github.com/xiaolin200206/durian-site-split" target="_blank" rel="noopener">Site-split code</a><a href="https://doi.org/10.5281/zenodo.22177133" target="_blank" rel="noopener">Dataset (Zenodo)</a><span class="note">Two manuscripts under review</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section id="data">
+  <h2>Datasets &amp; code</h2>
+  <p class="sub">Everything behind the numbers above is public — images, labels, weights, telemetry, and the scripts that regenerate each table.</p>
+  <table>
+    <tr><th>Release</th><th>What's in it</th><th>Link</th></tr>
+    <tr><td>Durian field dataset with capture-session IDs</td><td>560 images, 5 classes, session identifiers, exact partitions, audit code</td><td><a href="https://doi.org/10.5281/zenodo.22177133" target="_blank" rel="noopener">Zenodo</a></td></tr>
+    <tr><td>Durian detection dataset + trained weights</td><td>1,121 images, 3 label sets, leak-free re-partition, one checkpoint per run</td><td><a href="https://doi.org/10.5281/zenodo.22138420" target="_blank" rel="noopener">Zenodo</a></td></tr>
+    <tr><td>Multi-farm durian corpus (8 peninsular farms + Sabah)</td><td>1,314 images at 640 px, farm attribution, tree IDs, split manifests</td><td><a href="https://doi.org/10.5281/zenodo.22030622" target="_blank" rel="noopener">Zenodo</a></td></tr>
+    <tr><td>Greenhouse basil dataset + deployment telemetry</td><td>~1,700 images, per-frame logs from profiling, field and continuous sessions</td><td><a href="https://doi.org/10.5281/zenodo.22857312" target="_blank" rel="noopener">Zenodo</a></td></tr>
+    <tr><td>All code</td><td>Training, export, on-device measurement, audits, analysis</td><td><a href="https://github.com/xiaolin200206" target="_blank" rel="noopener">GitHub</a></td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<section id="papers">
+  <h2>Papers</h2>
+  <p class="sub">Sole author. One accepted, six under review at IEEE Transactions and Elsevier journals. I write them up because a measurement no one can check isn't worth much — not as a path to a PhD.</p>
+  <ol class="pubs">
+    <li>Thermal cut-off, not frequency throttling: duty-cycle scheduling and a dataset-integrity audit for on-farm edge disease detection in durian. <span class="status">Accepted — Smart Agricultural Technology (Elsevier)</span></li>
+    <li>When is one edge model better than two? A protocol-aware framework for selecting between unified and multi-model vision pipelines on resource-constrained devices. <span class="status">Under review</span></li>
+    <li>Which automated capabilities survive quantisation? A per-class deployability screen for quantised edge vision in automated inspection. <span class="status">Under review</span></li>
+    <li>Compute–thermal co-design of co-located dual-model inference for agricultural cyber-physical edge nodes. <span class="status">Under review</span></li>
+    <li>Deployment measurements of a containerised edge vision node on a Raspberry Pi 5: thermal, power and latency characteristics, and the attribution of container overhead. <span class="status">Under review</span></li>
+    <li>Capture sessions, not images: sampling-unit leakage in field image datasets and the limits of post hoc auditing. <span class="status">Under review</span></li>
+    <li>Held-out unit variability overshadows architectural differences in clustered machine-learning benchmarks. <span class="status">Under review</span></li>
+  </ol>
+</section>
+
+<!-- ============================================================ -->
+<section id="skills">
+  <h2>Skills</h2>
+  <div class="skills">
+    <div><b>Computer vision</b>PyTorch, Ultralytics YOLO (v8, 11), RT-DETR, Faster R-CNN, MobileNet, EfficientNet, OpenCV</div>
+    <div><b>Edge deployment</b>Raspberry Pi 5, Linux, ONNX Runtime, LiteRT / TFLite (XNNPACK), INT8 and dynamic quantisation, Docker, libcamera</div>
+    <div><b>Profiling</b>Latency, power and thermal telemetry; Arm PMU counters; duty-cycle and multi-model scheduling</div>
+    <div><b>Data</b>Field data collection, lesion-level annotation, validation on unseen orchards, multi-seed experiments</div>
+    <div><b>Languages &amp; tools</b>Python, SQL · Git/GitHub, Flask, AWS, Matplotlib, Telegram Bot API</div>
+    <div><b>Education</b>BSc Computer Science (Data Science), UCSI University, Kuala Lumpur — expected May 2027</div>
+  </div>
+</section>
+
+<footer>
+  <p>Lin Ding Shan · <a href="mailto:l1055505011@gmail.com">l1055505011@gmail.com</a> · <a href="https://github.com/xiaolin200206" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/lin-ding-shan/" target="_blank" rel="noopener">LinkedIn</a></p>
+  <p class="note">Every figure on this page is computed from released data by released scripts. Categories are symptom classes assessed in the field, not laboratory diagnoses; the device supports a grower's judgement rather than replacing it.</p>
+</footer>
+
+</div>
+</body>
+</html>
