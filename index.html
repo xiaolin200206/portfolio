@@ -60,6 +60,8 @@
     text-align: center; color: var(--muted); font-size: 0.9rem; padding: 16px;
   }
   .media img, .media video { width: 100%; height: auto; border-radius: 10px; display: block; }
+  figure.media { margin: 0; padding: 0; border: none; background: none; min-height: 0; display: block; }
+  figure.media figcaption { font-size: 0.82rem; color: var(--muted); margin-top: 8px; line-height: 1.4; text-align: left; }
   .cards { display: grid; grid-template-columns: 1fr; gap: 16px; }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; }
   .card h3 { margin: 0 0 4px; font-size: 1.12rem; }
@@ -117,13 +119,10 @@
       <p>A grower walks the orchard, photographs a suspect leaf or trunk, and within a few hundred milliseconds the device suggests which of 12 disease and pest categories it might be. It runs entirely on a battery-powered Raspberry Pi 5 — no network, nothing uploaded — and is a decision aid, not a diagnosis: the final call stays with the grower.</p>
       <p>I built the whole thing: field data collection across 11 orchard sites in Peninsular Malaysia and Sabah, the lesion-level annotation standard (set with a crop-protection practitioner), detector training, ONNX / LiteRT export, quantisation, and on-device profiling with hardware counters. It is a field-tested prototype; trials with growers are the next step.</p>
     </div>
-    <div class="media">
-      <!-- Replace this block with a real photo or a 20–30 s video of the device in the orchard, e.g.:
-           <img src="img/device.jpg" alt="Handheld scouting device in a durian orchard">
-           or
-           <video src="media/demo.mp4" controls muted playsinline></video> -->
-      Device photo / 30-second field demo goes here
-    </div>
+    <figure class="media">
+      <img src="img/device.jpg" alt="Early field build of the scouting device: Raspberry Pi 5 with active cooler and camera module in a sealed enclosure with desiccant, small display and power bank, on the ground in a durian orchard">
+      <figcaption>Early field build, Feb 2026: Raspberry Pi 5 + Active Cooler + camera module in a sealed enclosure with desiccant, driven from a pass-through power bank, during an orchard session in Negeri Sembilan. The current handheld revision is in testing.</figcaption>
+    </figure>
   </div>
 
   <div class="stats">
