@@ -136,7 +136,7 @@
 <!-- ============================================================ -->
 <section id="work">
   <h2>Case studies</h2>
-  <p class="sub">Each one is a question the device forced me to answer, with the measurement that answered it. Every number links to public data and code.</p>
+  <p class="sub">Each one is a question the device forced me to answer, with the measurement that answered it. Each links to its public code and data.</p>
 
   <div class="cards">
 
@@ -187,6 +187,19 @@
         <li>An INT8 accelerator (Hailo-8L) ran 15× faster and returned ~188 boxes per empty frame; the GPU-dependent conversion path was judged unfit for an evolving label space and the device was returned.</li>
       </ul>
       <div class="foot"><a href="https://github.com/xiaolin200206/durian-edge-ai-scheduling" target="_blank" rel="noopener">Scheduler, logs &amp; analysis</a><span class="note">Manuscript under review</span></div>
+    </div>
+
+    <div class="card">
+      <h3>A premium tier on Jetson, and why I dropped it</h3>
+      <p class="meta">Jetson Orin Nano Super vs Raspberry Pi 5 · same two ONNX detectors · ONNX Runtime CUDA vs CPU · Docker · 3 h battery runs with pack telemetry</p>
+      <p>The plan was two products: Jetson for growers who want the fastest device, Pi 5 for everyone else. I ported the whole pipeline to Jetson and ran both boards through the same scheduling trials and on battery before deciding.</p>
+      <ul>
+        <li>Jetson was <b>5.4× faster</b> on pest detection (186 → 35 ms) at 2.9× the hardware cost and about 1.4× the power at the pack (11.7 W vs 8.2 W), so on a common 60 Wh pack it would last 5.1 h instead of 7.3 h. Energy per detection cycle was about the same (4.44 vs 4.20 mWh): the speed bought no energy saving per unit of work.</li>
+        <li>A hand-built CUDA container hit three faults in a row: a CPU-only ONNX Runtime that the dependency installer substituted silently, a PyTorch wheel whose version string pip rejected, and an ARM SVE detection fault. The vendor-maintained image was what worked, and GPU containers on this board carry far more setup risk than CPU ones.</li>
+        <li>Where the battery goes on the Pi: pausing inference while capture kept running showed 6.3 W between inferences against 8.4 W inferring, so a faster model can save at most about half the energy; 1.6 W of the idle draw is the camera loop.</li>
+        <li>Decision: the board needed repeated OS reflashes, which a grower cannot do in the field, and Pi 5 already met the response-time target. The Jetson tier was dropped.</li>
+      </ul>
+      <div class="foot"><a href="https://github.com/xiaolin200206/Dual_model_scheduling" target="_blank" rel="noopener">Code &amp; telemetry (both boards)</a></div>
     </div>
 
     <div class="card">
@@ -250,8 +263,8 @@
   <h2>Skills</h2>
   <div class="skills">
     <div><b>Computer vision</b>PyTorch, Ultralytics YOLO (v8, 11), RT-DETR, Faster R-CNN, MobileNet, EfficientNet, OpenCV</div>
-    <div><b>Edge deployment</b>Raspberry Pi 5, Linux, ONNX Runtime, LiteRT / TFLite (XNNPACK), INT8 and dynamic quantisation, Docker, libcamera</div>
-    <div><b>Profiling</b>Latency, power and thermal telemetry; Arm PMU counters; duty-cycle and multi-model scheduling</div>
+    <div><b>Edge deployment</b>Raspberry Pi 5, Jetson Orin Nano (CUDA), Linux, ONNX Runtime, LiteRT / TFLite (XNNPACK), INT8 and dynamic quantisation, Docker, libcamera</div>
+    <div><b>Profiling</b>Latency, power and thermal telemetry; battery / UPS telemetry over I2C; Arm PMU counters; duty-cycle and multi-model scheduling</div>
     <div><b>Data</b>Field data collection, lesion-level annotation, validation on unseen orchards, multi-seed experiments</div>
     <div><b>Languages &amp; tools</b>Python, SQL · Git/GitHub, Flask, AWS, Matplotlib, Telegram Bot API</div>
     <div><b>Education</b>BSc Computer Science (Data Science), UCSI University, Kuala Lumpur — expected May 2027</div>
