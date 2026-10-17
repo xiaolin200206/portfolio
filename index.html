@@ -118,7 +118,7 @@
     <div>
       <p>A grower photographs a suspect leaf or trunk with their phone, and SnapDurian marks on the photo which of 11 disease and pest categories it might be, in English, Chinese or Malay. It runs in the phone browser as a web app; photos taken without signal stay on the phone and are sent when signal returns. It is a decision aid, not a diagnosis: the final call stays with the grower.</p>
       <p>It started as a fully offline handheld device on a Raspberry Pi 5. Farm tests showed the kit was awkward to carry — screen and camera in one hand, power bank in the other, the Pi overheating in a backpack — so the product moved to the phone. Most of the case studies below come from the device and still shape the app, starting with one unified model instead of two.</p>
-      <p>I built the whole thing: field photos from 12 orchard sites in Peninsular Malaysia and Sabah, the lesion-level annotation standard (agreed with a crop-protection practitioner), outsourced annotation reviewed image by image, the dataset merge pipeline, detector training, and the FastAPI + ONNX Runtime backend behind the app. Grower trials are being set up.</p>
+      <p>I built the whole thing: field photos from 12 orchard sites in Peninsular Malaysia and Sabah, the lesion-level annotation standard (agreed with a crop-protection practitioner), outsourced annotation reviewed image by image, merging the per-category annotation exports into one dataset, detector training, and the FastAPI + ONNX Runtime backend behind the app. Grower trials are being set up.</p>
     </div>
     <figure class="media">
       <img src="img/device.jpg" alt="Early field build of the scouting device: Raspberry Pi 5 with active cooler and camera module in a sealed enclosure with desiccant, small display and power bank, on the ground in a durian orchard">
@@ -206,11 +206,11 @@
     <div class="card">
       <h3>A containerised greenhouse monitoring node — and why container-overhead numbers don't travel</h3>
       <p class="meta">Urban Farm Tech internship, Jan–May 2026 · MobileNetV2 → ONNX · native vs matched container vs older-stack container · nine 3 h runs, randomised blocks · node input power</p>
-      <p>Built and deployed an offline basil disease-monitoring node in a commercial greenhouse: ~1,700 on-site images, Raspberry Pi 5, Telegram alerts confirmed over 3-of-5 frames, under 2.5 s end to end. The first Docker build ran 46% slower than native; the cause was the ONNX Runtime version baked into the image (1.19 vs 1.29 on the host), not Docker. A controlled study then separated the two.</p>
+      <p>Built and deployed an offline basil disease-monitoring node in a commercial greenhouse: ~1,700 on-site images, Raspberry Pi 5, Telegram alerts sent when 3 of 5 consecutive frames agree, under 2.5 s end to end. A controlled study on the node then compared native and containerised deployment.</p>
       <ul>
         <li>With the software stack held identical, containerisation added 1.30 ms (6.7%) to mean inference latency and 1.9% to processor time, and changed energy per inference by no more than a few percent.</li>
         <li>With the execution mode held constant, the older stack was 41.5% slower, yet drew 6.7% less active power and used 16.3% less energy per inference above the power floor — watts and energy per unit of work can point in opposite directions.</li>
-        <li>The node's settled power floor accounted for 67–71% of the energy per inference over the duty cycle. Wrote a per-run environment-manifest tool so such comparisons stay attributable.</li>
+        <li>The node's settled power floor accounted for 67–71% of the energy per inference over the duty cycle.</li>
       </ul>
       <div class="foot"><a href="https://github.com/xiaolin200206/edge-container-deployment-measurement" target="_blank" rel="noopener">Code &amp; telemetry</a><a href="https://doi.org/10.5281/zenodo.22857312" target="_blank" rel="noopener">Dataset (Zenodo)</a><span class="note">Manuscript submitted</span></div>
     </div>
