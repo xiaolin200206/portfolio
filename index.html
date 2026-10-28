@@ -48,20 +48,17 @@
   section { padding: 44px 0; border-bottom: 1px solid var(--line); }
   section h2 { font-size: 1.45rem; margin: 0 0 6px; }
   section p.sub { color: var(--muted); margin: 0 0 24px; }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 22px 0; }
+  .prose { max-width: 720px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 22px 0 0; }
   .stat { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
   .stat b { display: block; font-size: 1.5rem; line-height: 1.1; color: var(--accent); font-family: var(--mono); }
   .stat span { display: block; font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
-  .device { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; }
-  @media (max-width: 720px) { .device { grid-template-columns: 1fr; } }
-  .media {
-    background: var(--accent-soft); border: 1px dashed var(--accent); border-radius: 12px;
-    min-height: 240px; display: flex; align-items: center; justify-content: center;
-    text-align: center; color: var(--muted); font-size: 0.9rem; padding: 16px;
-  }
-  .media img, .media video { width: 100%; height: auto; border-radius: 10px; display: block; }
-  figure.media { margin: 0; padding: 0; border: none; background: none; min-height: 0; display: block; }
-  figure.media figcaption { font-size: 0.82rem; color: var(--muted); margin-top: 8px; line-height: 1.4; text-align: left; }
+  .figs { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; margin: 26px 0 0; }
+  @media (max-width: 720px) { .figs { grid-template-columns: 1fr; } }
+  figure.media { margin: 0; }
+  figure.media img { width: 100%; height: auto; display: block; border-radius: 10px; border: 1px solid var(--line); }
+  figure.media figcaption { font-size: 0.82rem; color: var(--muted); margin-top: 8px; line-height: 1.4; }
+  figure.media figcaption b { color: var(--fg); font-weight: 600; }
   .cards { display: grid; grid-template-columns: 1fr; gap: 16px; }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; }
   .card h3 { margin: 0 0 4px; font-size: 1.12rem; }
@@ -93,7 +90,7 @@
   <p class="tag">AgriTech Computer Vision &nbsp;|&nbsp; Edge AI Deployment</p>
   <p class="lead">I build vision systems for agriculture, from a handheld edge device to a phone app for the orchard — then measure what actually happens: latency, power, heat, and the classes a benchmark score quietly loses.</p>
   <div class="links">
-    <a href="mailto:l1055505011@gmail.com">l1055505011@gmail.com</a>
+    <a href="mailto:lindingshan0725@gmail.com">lindingshan0725@gmail.com</a>
     <a href="https://github.com/xiaolin200206" target="_blank" rel="noopener">GitHub</a>
     <a href="https://www.linkedin.com/in/lin-ding-shan/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="Lin_Ding_Shan_Resume.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
@@ -112,17 +109,22 @@
 <!-- ============================================================ -->
 <section id="device">
   <h2>SnapDurian: durian disease and pest scouting, from a handheld device to a phone app</h2>
-  <p class="sub">Founder &amp; engineer, Jul 2025 – present · pre-incorporation venture, Malaysia · <a href="https://snapdurian.com" target="_blank" rel="noopener">snapdurian.com</a></p>
+  <p class="sub">Computer vision engineer, Jul 2025 – present · independent agri-tech venture, Malaysia · <a href="https://snapdurian.com" target="_blank" rel="noopener">snapdurian.com</a></p>
 
-  <div class="device">
-    <div>
-      <p>A grower photographs a suspect leaf or trunk with their phone, and SnapDurian marks on the photo which of 11 disease and pest categories it might be, in English, Chinese or Malay. It runs in the phone browser as a web app; photos taken without signal stay on the phone and are sent when signal returns. It is a decision aid, not a diagnosis: the final call stays with the grower.</p>
-      <p>It started as a fully offline handheld device on a Raspberry Pi 5. Farm tests showed the kit was awkward to carry — screen and camera in one hand, power bank in the other, the Pi overheating in a backpack — so the product moved to the phone. Most of the case studies below come from the device and still shape the app, starting with one unified model instead of two.</p>
-      <p>I built the whole thing: field photos from 12 orchard sites in Peninsular Malaysia and Sabah, the lesion-level annotation standard (agreed with a crop-protection practitioner), outsourced annotation reviewed image by image, merging the per-category annotation exports into one dataset, detector training, and the FastAPI + ONNX Runtime backend behind the app. Grower trials are being set up.</p>
-    </div>
+  <div class="prose">
+    <p>A grower photographs a suspect leaf or trunk with their phone, and SnapDurian marks on the photo which of 11 disease and pest categories it might be, in English, Chinese or Malay. It runs in the phone browser as a web app; photos taken without signal stay on the phone and are sent when signal returns. It is a decision aid, not a diagnosis: the final call stays with the grower. Four pilot growers in Sabah, Negeri Sembilan and Johor are using it.</p>
+    <p>It started as a fully offline handheld device on a Raspberry Pi 5. Farm tests showed the kit was awkward to carry — screen and camera in one hand, power bank in the other, the Pi overheating in a backpack — so the product moved to the phone. Most of the case studies below come from the device and still shape the app, starting with one unified model instead of two.</p>
+    <p>I built the whole thing: field photos from 12 orchard sites in Peninsular Malaysia and Sabah, the lesion-level annotation standard (agreed with a crop-protection practitioner), outsourced annotation reviewed image by image, merging the per-category exports into one dataset (~2,000 images, ~23,000 lesion boxes), detector training, and the FastAPI + ONNX Runtime backend behind the app — invite codes and daily limits for the pilot, model swaps without a restart, a tiled second pass for small lesions in distant shots, and one-tap grower feedback that becomes pre-labels for retraining.</p>
+  </div>
+
+  <div class="figs">
+    <figure class="media">
+      <img src="img/app.png" alt="SnapDurian home screen in a browser: a greeting, the daily photo count and trial end date, a large Take a photo button, Choose from gallery, a capture tip, an Add to home screen prompt, an empty History list and Settings">
+      <figcaption><b>Now:</b> the phone web app (test account). Take a photo or choose one from the gallery; pilot accounts have a daily limit and a trial period; the interface switches between English, Chinese and Malay.</figcaption>
+    </figure>
     <figure class="media">
       <img src="img/device.jpg" alt="Early field build of the scouting device: Raspberry Pi 5 with active cooler and camera module in a sealed enclosure with desiccant, small display and power bank, on the ground in a durian orchard">
-      <figcaption>Early field build of the handheld device, Feb 2026: Raspberry Pi 5 + Active Cooler + camera module in a sealed enclosure with desiccant, driven from a pass-through power bank, during an orchard session in Negeri Sembilan. The product has since moved to a phone app.</figcaption>
+      <figcaption><b>Where it started:</b> early field build of the handheld device, Feb 2026 — Raspberry Pi 5 + Active Cooler + camera module in a sealed enclosure with desiccant, driven from a pass-through power bank, during an orchard session in Negeri Sembilan.</figcaption>
     </figure>
   </div>
 
@@ -130,7 +132,7 @@
     <div class="stat"><b>11</b><span>disease &amp; pest categories</span></div>
     <div class="stat"><b>~2,000</b><span>field images from 12 orchard sites</span></div>
     <div class="stat"><b>351 ms</b><span>per image on the Pi with one model (down from 499 ms with two)</span></div>
-    <div class="stat"><b>3</b><span>languages: English, Chinese, Malay</span></div>
+    <div class="stat"><b>4</b><span>pilot growers in Sabah, Negeri Sembilan and Johor</span></div>
   </div>
 </section>
 
@@ -151,7 +153,7 @@
         <li>A <em>small</em> second detector overshot its arithmetic-proportional cost by 41%, because per-pass memory traffic on a 2 MB-cache SoC doesn't scale with FLOPs.</li>
         <li>Under the real on-demand duty cycle, per-patrol energy differed by 2%; operator wait differed by 2×. The fielded pair (YOLO11s + YOLO11n) took 499 ms per image; the device moved to one model: <b>499 → 351 ms</b>.</li>
       </ul>
-      <div class="foot"><a href="https://github.com/xiaolin200206/One-vs-two-model" target="_blank" rel="noopener">Code &amp; telemetry</a><span class="note">Manuscript submitted</span></div>
+      <div class="foot"><a href="https://github.com/xiaolin200206/One-vs-two-model" target="_blank" rel="noopener">Code &amp; telemetry</a><span class="note">Manuscript under review</span></div>
     </div>
 
     <div class="card">
@@ -167,7 +169,7 @@
     </div>
 
     <div class="card">
-      <h3>Thermal cut-off, not throttling, is what stops the device <span class="pill">paper accepted</span></h3>
+      <h3>Thermal cut-off, not throttling, is what stops the device <span class="pill">published</span></h3>
       <p class="meta">Raspberry Pi 5 + Active Cooler · YOLOv8s · 5 duty-cycle configurations · 3 h runs, replicated 4 weeks apart · SoC power rails</p>
       <p>Everyone worries about frequency throttling. On this platform it cost 2.6% of median latency. What interrupted monitoring was the 82 °C software cut-off: <b>99 events in 3 hours</b> of continuous inference, each a 5 s gap during which trees were walked past unexamined. A 30 s sleep interval removed them under test conditions; 45 s kept a margin.</p>
       <ul>
@@ -188,7 +190,7 @@
         <li>The no-overlap rule held in all 14 period–offset settings when computed from 99th-percentile latencies; computed from medians it failed just above the median. Size the offset from the tail, not the average.</li>
         <li>Replaying 281 orchard images against a 1.5 s dwell deadline: 31–33% missed under coordinated release, 44% when both detectors were released together.</li>
       </ul>
-      <div class="foot"><a href="https://github.com/xiaolin200206/dualdetector-pi5" target="_blank" rel="noopener">Scheduler, logs &amp; analysis</a><span class="note">Manuscript submitted</span></div>
+      <div class="foot"><a href="https://github.com/xiaolin200206/dualdetector-pi5" target="_blank" rel="noopener">Scheduler, logs &amp; analysis</a><span class="note">Manuscript under review</span></div>
     </div>
 
     <div class="card">
@@ -212,19 +214,19 @@
         <li>With the execution mode held constant, the older stack was 41.5% slower, yet drew 6.7% less active power and used 16.3% less energy per inference above the power floor — watts and energy per unit of work can point in opposite directions.</li>
         <li>The node's settled power floor accounted for 67–71% of the energy per inference over the duty cycle.</li>
       </ul>
-      <div class="foot"><a href="https://github.com/xiaolin200206/edge-container-deployment-measurement" target="_blank" rel="noopener">Code &amp; telemetry</a><a href="https://doi.org/10.5281/zenodo.22857312" target="_blank" rel="noopener">Dataset (Zenodo)</a><span class="note">Manuscript submitted</span></div>
+      <div class="foot"><a href="https://github.com/xiaolin200206/edge-container-deployment-measurement" target="_blank" rel="noopener">Code &amp; telemetry</a><a href="https://doi.org/10.5281/zenodo.22857312" target="_blank" rel="noopener">Dataset (Zenodo)</a><span class="note">Manuscript under review</span></div>
     </div>
 
     <div class="card">
-      <h3>Capture sessions, not images: what a field accuracy figure actually measures</h3>
-      <p class="meta">560 field images → 73 capture sessions · 9 architectures × 4 seeds · leave-one-farm-out on 8 orchards · PlantVillage leaf IDs</p>
-      <p>A camera carried into an orchard produces many near-independent-looking photos of one tree. Split at image level, 96.7% of test images shared a session with training; macro-F1 was inflated by 12.2 points on average and the ranking of nine architectures changed. PlantVillage has the same structure: 40,490 images are 7,524 leaves, and an image-level split leaks 99.6% of its test set.</p>
+      <h3>Where it started: my first model, and an attention module that didn't help</h3>
+      <p class="meta">First project · PyTorch · EfficientNet-B0 · my spatial gate vs squeeze-and-excitation and CBAM · 5 backbones · 550 field photos, 4 disease classes</p>
+      <p>This is how I learned CNN structure. I designed a small lesion-focused attention module — a single-channel spatial gate that reweights the last feature map of EfficientNet-B0 — and built a durian disease classifier around it: a first demo on a large public Kaggle dataset, then a rebuild on 550 field photos from orchards in Negeri Sembilan and Johor. I then tested the module against the plain network and two standard modules, every configuration trained the same way on the same splits.</p>
       <ul>
-        <li>Hash- and DINOv2-based audits recovered almost none of the session structure, so the grouping has to be recorded at capture — it can't be rebuilt after release.</li>
-        <li>Held out by farm, which farm is scored explains 70–88% of the variance in the reported figure; the architecture explains 0–3%. Using the withheld farm to pick the checkpoint moved figures by up to 14.7 points.</li>
-        <li>Practical consequence for the device: collect from more orchards before touching the model, and validate on orchards it has never seen.</li>
+        <li>My gate added 1,281 parameters and changed macro F1 by −0.13 points against the plain network. Squeeze-and-excitation (−1.26) and CBAM (−0.23) did no better, and moving the gate to earlier layers or raising the input to 320 px didn't help either.</li>
+        <li>Changing the backbone mattered more: ConvNeXt V2-Tiny and ViT-S/16 scored about 8 points higher than EfficientNet-B0 (74.8% and 75.0% vs 66.7% macro F1), at 4.5× and 2.7× its single-thread CPU time — consistent across splits, though not statistically confirmed on a dataset this size.</li>
+        <li>What I took into the product: try a better backbone or more data before adding modules, and price every gain in latency. For SnapDurian I moved from classification to detection, which marks where each lesion is instead of naming the whole photo.</li>
       </ul>
-      <div class="foot"><a href="https://github.com/xiaolin200206/durian-attention-cv" target="_blank" rel="noopener">Session benchmark</a><a href="https://github.com/xiaolin200206/durian-site-split" target="_blank" rel="noopener">Site-split code</a><a href="https://doi.org/10.5281/zenodo.22177133" target="_blank" rel="noopener">Dataset (Zenodo)</a></div>
+      <div class="foot"><a href="https://github.com/xiaolin200206/durian-attention-cv" target="_blank" rel="noopener">Code</a><a href="https://doi.org/10.5281/zenodo.22177133" target="_blank" rel="noopener">Photos (Zenodo)</a><span class="note">Manuscript under review</span></div>
     </div>
 
   </div>
@@ -236,9 +238,9 @@
   <p class="sub">Everything behind the numbers above is public — images, labels, weights, telemetry, and the scripts that regenerate each table.</p>
   <table>
     <tr><th>Release</th><th>What's in it</th><th>Link</th></tr>
-    <tr><td>Durian field dataset with capture-session IDs</td><td>560 images, 5 classes, session identifiers, exact partitions, audit code</td><td><a href="https://doi.org/10.5281/zenodo.22177133" target="_blank" rel="noopener">Zenodo</a></td></tr>
     <tr><td>Durian detection dataset + trained weights</td><td>1,121 images, 3 label sets, leak-free re-partition, one checkpoint per run</td><td><a href="https://doi.org/10.5281/zenodo.22138420" target="_blank" rel="noopener">Zenodo</a></td></tr>
     <tr><td>Multi-farm durian corpus (8 peninsular farms + Sabah)</td><td>1,314 images at 640 px, farm attribution, tree IDs, split manifests</td><td><a href="https://doi.org/10.5281/zenodo.22030622" target="_blank" rel="noopener">Zenodo</a></td></tr>
+    <tr><td>Durian disease photos (classification)</td><td>560 field photos, 5 disease classes; code, fold assignments and per-image predictions on GitHub</td><td><a href="https://doi.org/10.5281/zenodo.22177133" target="_blank" rel="noopener">Zenodo</a></td></tr>
     <tr><td>Greenhouse basil dataset + deployment telemetry</td><td>~1,700 images, per-frame logs from profiling, field and continuous sessions</td><td><a href="https://doi.org/10.5281/zenodo.22857312" target="_blank" rel="noopener">Zenodo</a></td></tr>
     <tr><td>All code</td><td>Training, export, on-device measurement, audits, analysis</td><td><a href="https://github.com/xiaolin200206" target="_blank" rel="noopener">GitHub</a></td></tr>
   </table>
@@ -247,12 +249,13 @@
 <!-- ============================================================ -->
 <section id="papers">
   <h2>Papers</h2>
-  <p class="sub">Sole author. One published, three more submitted. I write them up because a measurement no one can check isn't worth much — not as a path to a PhD.</p>
+  <p class="sub">One published, four under review. I write them up because a measurement no one can check isn't worth much — not as a path to a PhD.</p>
   <ol class="pubs">
     <li>Thermal cut-off, not frequency throttling: duty-cycle scheduling and a dataset-integrity audit for on-farm edge disease detection in durian. <span class="status">Published — Smart Agricultural Technology 15, 102526 · <a href="https://doi.org/10.1016/j.atech.2026.102526" target="_blank" rel="noopener">doi:10.1016/j.atech.2026.102526</a></span></li>
-    <li>When is one edge model better than two? A protocol-aware framework for selecting between unified and multi-model vision pipelines on resource-constrained devices. <span class="status">Submitted</span></li>
-    <li>Real-time release of two YOLO11 detectors on a Raspberry Pi 5: a single-clock scheduler and timing rules for an embedded scouting camera. <span class="status">Submitted</span></li>
-    <li>Container overhead or stale dependencies? Decomposing the latency and energy cost of containerised inference on an edge node. <span class="status">Submitted</span></li>
+    <li>Choosing between one unified detector and several specialist detectors on an edge device. <span class="status">Under review</span></li>
+    <li>Release scheduling and timing rules for two detectors on one Raspberry Pi 5. <span class="status">Under review</span></li>
+    <li>The latency and energy cost of containerised inference on an edge node. <span class="status">Under review</span></li>
+    <li>Attention modules and backbone choice for durian disease classification from field photographs. <span class="status">Under review</span></li>
   </ol>
 </section>
 
@@ -261,18 +264,18 @@
   <h2>Skills</h2>
   <div class="skills">
     <div><b>Computer vision</b>PyTorch, Ultralytics YOLO (v8, 11), RT-DETR, Faster R-CNN, MobileNet, EfficientNet, OpenCV</div>
-    <div><b>Edge deployment</b>Raspberry Pi 5, Jetson Orin Nano (CUDA), Linux, ONNX Runtime, LiteRT / TFLite (XNNPACK), INT8 and dynamic quantisation, Docker, libcamera</div>
+    <div><b>Edge deployment</b>Raspberry Pi 5, Jetson Orin Nano (CUDA), Linux, ONNX Runtime, LiteRT / TFLite (XNNPACK), INT8 and weight-only quantisation, Docker, libcamera, V4L2</div>
     <div><b>Profiling</b>Latency, power and thermal telemetry; battery / UPS telemetry over I2C; Arm PMU counters; duty-cycle and multi-model scheduling</div>
-    <div><b>Data</b>Field data collection, lesion-level annotation, validation on unseen orchards, multi-seed experiments</div>
+    <div><b>Data</b>Field data collection, lesion-level annotation protocols, dataset merging, validation on unseen orchards, multi-seed experiments</div>
     <div><b>Web &amp; backend</b>FastAPI, SQLite, Docker Compose, Caddy (HTTPS), PWA (service worker, offline queue), Telegram Bot API</div>
     <div><b>Languages &amp; tools</b>Python, SQL, Bash · Git/GitHub, Flask, AWS, Matplotlib</div>
-    <div><b>Education</b>BSc Computer Science (Data Science), UCSI University, Kuala Lumpur — expected May 2027</div>
+    <div><b>Education</b>Bachelor of Computer Science in Data Science with Honours, UCSI University, Kuala Lumpur — expected May 2027 · English (fluent), Mandarin (native)</div>
   </div>
 </section>
 
 <footer>
-  <p>Lin Ding Shan · <a href="mailto:l1055505011@gmail.com">l1055505011@gmail.com</a> · <a href="https://github.com/xiaolin200206" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/lin-ding-shan/" target="_blank" rel="noopener">LinkedIn</a></p>
-  <p class="note">Where a case study links to code and data, its figures are computed from them. Categories are symptom classes assessed in the field, not laboratory diagnoses; the device supports a grower's judgement rather than replacing it.</p>
+  <p>Lin Ding Shan · <a href="mailto:lindingshan0725@gmail.com">lindingshan0725@gmail.com</a> · <a href="https://github.com/xiaolin200206" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/lin-ding-shan/" target="_blank" rel="noopener">LinkedIn</a></p>
+  <p class="note">Where a case study links to code and data, its figures are computed from them. Categories are symptom classes assessed in the field, not laboratory diagnoses; the app supports a grower's judgement rather than replacing it.</p>
 </footer>
 
 </div>

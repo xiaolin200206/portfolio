@@ -1,16 +1,18 @@
-# Portfolio — deploy to GitHub Pages (5 minutes)
+# Portfolio — update the live site
 
-Goal: make https://xiaolin200206.github.io/portfolio/ live again (the link already in your emails).
+Live at https://xiaolin200206.github.io/portfolio/ (GitHub Pages, branch `main`, folder `/`).
 
-1. On GitHub: New repository → name it exactly `portfolio` → Public → Create.
-2. Upload these files to the repo root: `index.html`, `Lin_Ding_Shan_Resume.pdf`
-   (drag-and-drop on the repo page → "Add file" → "Upload files" → Commit).
-3. Repo → Settings → Pages → Source: "Deploy from a branch" → Branch: `main`, folder `/ (root)` → Save.
-4. Wait 1–3 minutes, open https://xiaolin200206.github.io/portfolio/
+To update: copy these files into the repo root, replacing the old ones, then commit and push.
+
+    index.html
+    Lin_Ding_Shan_Resume.pdf
+    img/app.png
+    img/device.jpg
+
+The site refreshes 1–3 minutes after the push. Plain HTML, no build step.
 
 Later:
-- Add a photo/video: put the file in the repo (e.g. `img/device.jpg`) and replace the
-  "Device photo / 30-second field demo goes here" block in index.html with
-  `<img src="img/device.jpg" alt="...">` (see the HTML comment there).
 - New résumé: overwrite `Lin_Ding_Shan_Resume.pdf` with the same filename.
-- Paper accepted / grower trials: edit the text in index.html directly; it's plain HTML, no build step.
+- Better app picture: replace `img/app.png` (a photo with lesions marked is the strongest choice).
+- A paper accepted: change its line under Papers from "Under review" to the journal and DOI,
+  and the note at the bottom of its case-study card.
